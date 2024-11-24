@@ -55,7 +55,7 @@ class Home extends StatelessWidget {
                   User newUser = User(contact, '');
                   myContactList.add(newUser);
                   myChatConversations[newUser] = [];
-                  openChat('');
+                  openChat('chat', newUser);
                 }
               });
             },
@@ -112,8 +112,7 @@ class Home extends StatelessWidget {
 
     for (int i = 0; i < 8; i++) {
       popularUsers.add(PopularContact(
-        imageURL: myContactList[i].imageURL,
-        name: myContactList[i].userName.split(' ')[0],
+        user: myContactList[i],
         openChat: openChat,
       ));
     }
@@ -127,14 +126,14 @@ class Home extends StatelessWidget {
     for (User sender in myChatConversations.keys.toList().reversed) {
       currentChats.add(
         ChatContact(
-            imageURL: sender.imageURL,
-            name: sender.userName,
-            messagePreview: (myChatConversations[sender]!.isEmpty) ? '' : myChatConversations[sender]!.last.message,
-            time: (myChatConversations[sender]!.isEmpty) ? '' : myChatConversations[sender]!.last.sendTime,
-            unreadCount: (myChatConversations[sender]!.isEmpty || myChatConversations[sender]!.last.read)
-                ? ''
-                : '${_getUnreadCount(myChatConversations[sender]!)}',
-            openChat: openChat),
+          user: sender,
+          messagePreview: (myChatConversations[sender]!.isEmpty) ? '' : myChatConversations[sender]!.last.message,
+          time: (myChatConversations[sender]!.isEmpty) ? '' : myChatConversations[sender]!.last.sendTime,
+          unreadCount: (myChatConversations[sender]!.isEmpty || myChatConversations[sender]!.last.read)
+              ? ''
+              : '${_getUnreadCount(myChatConversations[sender]!)}',
+          openChat: openChat,
+        ),
       );
     }
 

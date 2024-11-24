@@ -1,7 +1,7 @@
 import 'package:chat_app/model/user.dart';
 
 class ChatMessage {
-  User sender;
+  User? sender;
   String message;
   String sendTime;
   bool read;

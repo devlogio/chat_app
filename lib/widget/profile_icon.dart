@@ -1,15 +1,15 @@
+import 'package:chat_app/model/user.dart';
 import 'package:flutter/material.dart';
 
 class ProfileIcon extends StatelessWidget {
-  final String imageURL;
-  final String name;
+  final User user;
   final double size;
-  const ProfileIcon({super.key, required this.imageURL, required this.name, required this.size});
+  const ProfileIcon({super.key, required this.user, required this.size});
 
   Widget getAvatar() {
-    if (imageURL != '') {
+    if (user.imageURL != '') {
       return CircleAvatar(
-        backgroundImage: NetworkImage(imageURL),
+        backgroundImage: NetworkImage(user.imageURL),
         maxRadius: size,
       );
     } else {
@@ -17,7 +17,7 @@ class ProfileIcon extends StatelessWidget {
         backgroundColor: Colors.blue.shade800,
         maxRadius: size,
         child: Text(
-          name[0],
+          user.userName[0],
           style: const TextStyle(fontSize: 30, color: Colors.white),
         ),
       );

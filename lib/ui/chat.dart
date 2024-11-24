@@ -1,9 +1,22 @@
+import 'package:chat_app/data/current_chats.dart';
+import 'package:chat_app/model/chat_message.dart';
+import 'package:chat_app/model/user.dart';
+import 'package:chat_app/widget/chat_bubble.dart';
 import 'package:chat_app/widget/profile_icon.dart';
 import 'package:flutter/material.dart';
 
-class Chat extends StatelessWidget {
+class Chat extends StatefulWidget {
   final Function back;
-  const Chat({super.key, required this.back});
+  final User user;
+  const Chat({super.key, required this.back, required this.user});
+
+  @override
+  State<Chat> createState() => _ChatState();
+}
+
+class _ChatState extends State<Chat> {
+  String _newMessage = '';
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +29,7 @@ class Chat extends StatelessWidget {
         scrolledUnderElevation: 0.0,
         leading: GestureDetector(
           onTap: () {
-            back('home');
+            widget.back('home', null);
           },
           child: const Icon(Icons.arrow_back_ios_new),
         ),
@@ -25,11 +38,11 @@ class Chat extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(right: 20.0),
-              child: ProfileIcon(imageURL: '', name: 'Eric Porter', size: 22.0),
+              child: ProfileIcon(user: widget.user, size: 22.0),
             ),
             Text(
-              'Eric Porter',
-              style: TextStyle(fontSize: 35),
+              widget.user.userName,
+              style: const TextStyle(fontSize: 35),
             ),
           ],
         ),
@@ -46,149 +59,79 @@ class Chat extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          constraints: BoxConstraints(maxWidth: 300),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Hi, Asal',
-                              style: TextStyle(fontSize: 15.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          constraints: BoxConstraints(maxWidth: 300),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'How do you by "nice" stuff?',
-                              style: TextStyle(fontSize: 15.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          constraints: BoxConstraints(maxWidth: 300),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Please help me find a good monitor for the design',
-                              style: TextStyle(fontSize: 15.0),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(37, 211, 102, 1.0),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          constraints: BoxConstraints(maxWidth: 300),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Hi, Zaire',
-                              style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromRGBO(37, 211, 102, 1.0),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          constraints: BoxConstraints(maxWidth: 300),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'I usually by directly from the shop to reduce the risk of damaged travel, and prevent any damage',
-                              style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                children: _populateChat(),
               ),
             ),
           ),
-          Divider(),
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 5.0, bottom: 50.0, right: 25.0, left: 25.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(25.0),
-                            ),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0, bottom: 50.0, right: 25.0, left: 25.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: TextField(
+                      controller: controller,
+                      onChanged: (inputMessage) {
+                        _newMessage = inputMessage;
+                      },
+                      onSubmitted: (inputMessage) {
+                        _appendNewMessage();
+                      },
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(25.0),
                           ),
-                          hintText: 'New Chat',
-                          fillColor: Colors.grey.shade100,
-                          filled: true,
                         ),
+                        hintText: 'New Chat',
+                        fillColor: Colors.grey.shade100,
+                        filled: true,
                       ),
                     ),
                   ),
-                  Icon(Icons.send)
-                ],
-              ),
+                ),
+                GestureDetector(
+                  child: const Icon(Icons.send),
+                  onTap: () {
+                    _appendNewMessage();
+                  },
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<Widget> _populateChat() {
+    List<Widget> chat = [];
+
+    for (ChatMessage chatMessage in myChatConversations[widget.user]!) {
+      chatMessage.read = true;
+      chat.add(ChatBubble(message: chatMessage.message, sender: chatMessage.sender));
+    }
+
+    return chat;
+  }
+
+  void _appendNewMessage() {
+    if (_newMessage == '') return;
+
+    final now = DateTime.now();
+    setState(() {
+      myChatConversations[widget.user]!.add(
+        ChatMessage(
+          sender: null,
+          message: _newMessage,
+          sendTime: '${now.hour}:${now.minute}',
+        ),
+      );
+    });
+    _newMessage = '';
+    controller.clear();
   }
 }

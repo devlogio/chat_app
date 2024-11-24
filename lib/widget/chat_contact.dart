@@ -1,17 +1,16 @@
+import 'package:chat_app/model/user.dart';
 import 'package:chat_app/widget/profile_icon.dart';
 import 'package:flutter/material.dart';
 
 class ChatContact extends StatelessWidget {
-  final String imageURL;
-  final String name;
+  final User user;
   final String messagePreview;
   final String time;
   final String unreadCount;
   final Function openChat;
   const ChatContact({
     super.key,
-    required this.imageURL,
-    required this.name,
+    required this.user,
     required this.messagePreview,
     required this.time,
     required this.unreadCount,
@@ -24,12 +23,12 @@ class ChatContact extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 20.0),
       child: GestureDetector(
         onTap: () {
-          openChat('chat');
+          openChat('chat', user);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ProfileIcon(imageURL: imageURL, name: name, size: 27),
+            ProfileIcon(user: user, size: 27),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -37,7 +36,7 @@ class ChatContact extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      user.userName,
                       style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
                     ),
                     Text(

@@ -1,3 +1,4 @@
+import 'package:chat_app/model/user.dart';
 import 'package:chat_app/ui/chat.dart';
 import 'package:chat_app/ui/home.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +27,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _view = 'home';
+  User _user = new User('', '');
 
-  void changeView(String newView) {
+  void changeView(String newView, User? newUser) {
+    if (newView != 'home') {
+      _user = newUser!;
+    }
+
     setState(() {
       _view = newView;
     });
@@ -41,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       return Chat(
         back: changeView,
+        user: _user,
       );
     }
   }
