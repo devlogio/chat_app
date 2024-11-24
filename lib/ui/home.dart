@@ -1,3 +1,7 @@
+import 'package:chat_app/data/current_chats.dart';
+import 'package:chat_app/data/my_contacts.dart';
+import 'package:chat_app/model/chat_message.dart';
+import 'package:chat_app/model/user.dart';
 import 'package:chat_app/widget/chat_contact.dart';
 import 'package:chat_app/widget/popular_contact.dart';
 import 'package:flutter/material.dart';
@@ -27,48 +31,7 @@ class Home extends StatelessWidget {
                     height: 125.0,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      children: [
-                        PopularContact(
-                          name: 'Eric',
-                          imageURL: '',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'Terry',
-                          imageURL: 'https://cdn.pixabay.com/photo/2022/07/24/11/35/women-7341444_1280.jpg',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'Craig',
-                          imageURL: 'https://cdn.pixabay.com/photo/2023/08/29/20/00/dahlia-8222052_1280.jpg',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'Roger',
-                          imageURL: 'https://cdn.pixabay.com/photo/2022/01/13/00/08/austria-6934184_1280.jpg',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'Nolan',
-                          imageURL: 'https://cdn.pixabay.com/photo/2024/11/02/17/29/city-9169729_1280.jpg',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'John',
-                          imageURL: 'https://cdn.pixabay.com/photo/2024/02/24/07/24/stilt-8593487_1280.jpg',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'Amber',
-                          imageURL: 'https://cdn.pixabay.com/photo/2024/10/12/17/15/flowers-9115519_1280.jpg',
-                          openChat: openChat,
-                        ),
-                        PopularContact(
-                          name: 'Tim',
-                          imageURL: 'https://cdn.pixabay.com/photo/2024/09/19/14/17/bumblebee-9058915_1280.jpg',
-                          openChat: openChat,
-                        ),
-                      ],
+                      children: _getPopularUsers(),
                     ),
                   ),
                   const Padding(
@@ -80,110 +43,24 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ChatContact(
-                    imageURL: '',
-                    name: 'Eric Porter',
-                    messagePreview: 'Please help me find a good monitor for my desktop',
-                    time: '02:11',
-                    unreadCount: '2',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2022/07/24/11/35/women-7341444_1280.jpg',
-                    name: 'Terry Dias',
-                    messagePreview: 'What a game',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2023/08/29/20/00/dahlia-8222052_1280.jpg',
-                    name: 'Craig Madsen',
-                    messagePreview: 'Can you get dinner on the way home?',
-                    time: '02:11',
-                    unreadCount: '1',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2022/01/13/00/08/austria-6934184_1280.jpg',
-                    name: 'Roger Dias',
-                    messagePreview: 'Do you want to join the party tomorrow?',
-                    time: '02:11',
-                    unreadCount: '3',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2024/11/02/17/29/city-9169729_1280.jpg',
-                    name: 'Nolan Curtis',
-                    messagePreview: '👍',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2024/02/24/07/24/stilt-8593487_1280.jpg',
-                    name: 'John Doe',
-                    messagePreview: 'Please help me find a good monitor for my desktop',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2024/10/12/17/15/flowers-9115519_1280.jpg',
-                    name: 'Amber Lock',
-                    messagePreview: 'See you on the weekend',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2024/09/19/14/17/bumblebee-9058915_1280.jpg',
-                    name: 'Tim Book',
-                    messagePreview: 'Thank you',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2022/05/12/18/03/flower-7192017_1280.jpg',
-                    name: 'Angel Curtis',
-                    messagePreview: 'Please clean up this mess',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2024/07/23/18/37/wasp-8916137_1280.jpg',
-                    name: 'Zaire Dorwart',
-                    messagePreview: 'iPhone vs. Android',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2023/03/28/09/29/tulip-7882705_1280.jpg',
-                    name: 'Kelas Malam',
-                    messagePreview: 'I ❤️ Flutter',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
-                  ChatContact(
-                    imageURL: 'https://cdn.pixabay.com/photo/2023/06/05/08/49/sea-8041734_1280.jpg',
-                    name: 'Jocelyn Gouse',
-                    messagePreview: 'Please subscribe',
-                    time: '02:11',
-                    unreadCount: '',
-                    openChat: openChat,
-                  ),
+                  _getChats(),
                 ],
               ),
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              _newChat(context).then((contact) {
+                if (contact != '') {
+                  User newUser = User(contact, '');
+                  myContactList.add(newUser);
+                  myChatConversations[newUser] = [];
+                  openChat('');
+                }
+              });
+            },
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-            backgroundColor: Color.fromRGBO(7, 94, 84, 1.0),
+            backgroundColor: const Color.fromRGBO(7, 94, 84, 1.0),
             child: const Icon(
               Icons.add,
               color: Colors.white,
@@ -193,5 +70,85 @@ class Home extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<String> _newChat(BuildContext context) async {
+    String contact = '';
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("New Chat Conversation"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Contact',
+                ),
+                onChanged: (value) {
+                  contact = value;
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, contact),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () => Navigator.pop(context, contact),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  List<Widget> _getPopularUsers() {
+    List<Widget> popularUsers = [];
+
+    for (int i = 0; i < 8; i++) {
+      popularUsers.add(PopularContact(
+        imageURL: myContactList[i].imageURL,
+        name: myContactList[i].userName.split(' ')[0],
+        openChat: openChat,
+      ));
+    }
+
+    return popularUsers;
+  }
+
+  Widget _getChats() {
+    List<Widget> currentChats = [];
+
+    for (User sender in myChatConversations.keys.toList().reversed) {
+      currentChats.add(
+        ChatContact(
+            imageURL: sender.imageURL,
+            name: sender.userName,
+            messagePreview: (myChatConversations[sender]!.isEmpty) ? '' : myChatConversations[sender]!.last.message,
+            time: (myChatConversations[sender]!.isEmpty) ? '' : myChatConversations[sender]!.last.sendTime,
+            unreadCount: (myChatConversations[sender]!.isEmpty || myChatConversations[sender]!.last.read)
+                ? ''
+                : '${_getUnreadCount(myChatConversations[sender]!)}',
+            openChat: openChat),
+      );
+    }
+
+    return Column(children: currentChats);
+  }
+
+  int _getUnreadCount(List<ChatMessage> chatMessages) {
+    int unreadCount = 0;
+
+    for (int i = chatMessages.length - 1; i >= 0; i--) {
+      if (chatMessages[i].read) break;
+      unreadCount++;
+    }
+
+    return unreadCount;
   }
 }
